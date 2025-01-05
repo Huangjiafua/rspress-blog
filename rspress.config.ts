@@ -19,9 +19,9 @@ export default defineConfig({
       },
     ],
   },
-  builderConfig: {
-    output: {
-      assetPrefix: 'https://cdn.com/',
-    },
-  },
+  // builderConfig: {
+  //   output: {
+  //     assetPrefix: 'https://cdn.com/',
+  //   },
+  // },
 });
