@@ -5,7 +5,7 @@ export default defineConfig({
   root: path.join(__dirname, 'docs'),
   title: 'My Site',
   icon: '/rspress-icon.png',
-  base: '/richmon/',
+  // base: '/richmon/',
   logo: {
     light: '/rspress-light-logo.png',
     dark: '/rspress-dark-logo.png',
