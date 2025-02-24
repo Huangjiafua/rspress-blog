@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "dev": "rspress dev",
     "build": "rspress build",
     "check": "biome check --write",
-    "dev": "rspress dev",
     "format": "biome format --write",
     "preview": "rspress build & rspress preview"
   },

@@ -2,15 +2,11 @@
   {
     "text": "Guide",
     "link": "/guide/",
-    "activeMatch": "/guide/"
+    "activeMatch": "^/guides/"
   },
   {
-    "text": "Hello World",
-    "link": "/hello/",
-    "activeMatch": "/hello/"
-  },
-  {
-    "text": "API",
-    "link": "https://rspress.dev/api/index.html"
+    "text": "Next.js",
+    "link": "/next-js/",
+    "activeMatch": "^/next-js/"
   }
 ]
