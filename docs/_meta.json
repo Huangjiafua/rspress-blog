@@ -10,7 +10,7 @@
     "activeMatch": "^/build/"
   },
   {
-    "text": "Official",
+    "text": "Official Development",
     "link": "/official/",
     "activeMatch": "^/official/"
   }
