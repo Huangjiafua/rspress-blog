@@ -5,8 +5,13 @@
     "activeMatch": "^/guides/"
   },
   {
-    "text": "Next.js",
-    "link": "/next-js/",
-    "activeMatch": "^/next-js/"
+    "text": "Build",
+    "link": "/build",
+    "activeMatch": "^/build/"
+  },
+  {
+    "text": "Official",
+    "link": "/official/",
+    "activeMatch": "^/official/"
   }
 ]

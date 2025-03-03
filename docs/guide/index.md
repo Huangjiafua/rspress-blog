@@ -1,7 +1,10 @@
-
 # Markdown & MDX
 
 Rspress supports not only Markdown but also [MDX](https://mdxjs.com/), a powerful way to develop content.
+
+:::info
+Syntax: https://www.markdownguide.org/basic-syntax/
+:::
 
 ## Markdown
 
@@ -128,22 +131,22 @@ You can use the \`\`\` syntax to create code blocks and support custom titles. F
 
 ````md
 ```js
-console.log('Hello World');
+console.log("Hello World");
 ```
 
 ```js title="hello.js"
-console.log('Hello World');
+console.log("Hello World");
 ```
 ````
 
 **Output:**
 
 ```js
-console.log('Hello World');
+console.log("Hello World");
 ```
 
 ```js title="hello.js"
-console.log('Hello World');
+console.log("Hello World");
 ```
 
 ### Show Line Numbers
@@ -180,7 +183,7 @@ You can also apply line highlighting and code block title at the same time, for 
 
 ````md
 ```js title="hello.js" {1,3-5}
-console.log('Hello World');
+console.log("Hello World");
 
 const a = 1;
 
@@ -195,7 +198,7 @@ console.log(b);
 **Ouput:**
 
 ```js title="hello.js" {1,3-5}
-console.log('Hello World');
+console.log("Hello World");
 
 const a = 1;
 
