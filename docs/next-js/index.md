@@ -1,3 +1,1 @@
 # NEXT.JS
-
-doc
