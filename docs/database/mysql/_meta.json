@@ -1,0 +1,13 @@
+[
+  "index",
+  {
+    "type": "dir",
+    "name": "basic-grammar",
+    "label": "Basic Grammar"
+  },
+  {
+    "type": "dir",
+    "name": "functions",
+    "label": "Functions"
+  }
+]

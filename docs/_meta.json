@@ -2,16 +2,11 @@
   {
     "text": "Guide",
     "link": "/guide/",
-    "activeMatch": "^/guides/"
+    "activeMatch": "^/guide/"
   },
   {
-    "text": "Build",
-    "link": "/build",
-    "activeMatch": "^/build/"
-  },
-  {
-    "text": "Official Development",
-    "link": "/official/",
-    "activeMatch": "^/official/"
+    "text": "Database",
+    "link": "/database/mysql/",
+    "activeMatch": "^/database/"
   }
 ]
