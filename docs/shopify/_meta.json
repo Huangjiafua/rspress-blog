@@ -1,17 +1,17 @@
 [
   "index",
   {
-    "type": "file",
+    "type": "dir",
     "name": "customer-account-ui-extensions-getting-start",
     "label": "Customer Account UI Extensions Getting Start"
   },
   {
-    "type": "file",
+    "type": "dir",
     "name": "pos-ui-extension-frontend-getting-start",
     "label": "POS UI Extension Frontend Getting Start"
   },
   {
-    "type": "file",
+    "type": "dir",
     "name": "theme-app-extension-deep-link",
     "label": "Theme App Extension Deep Link"
   }

@@ -4,18 +4,17 @@
 
 ## 学习路径
 
-1. 先看基础语法分类：DDL、DML、DQL、DCL、TCL  
-2. 再掌握约束与数据类型，理解设计表结构的原则  
+1. 先看基础语法分类：DDL、DML、DQL、DCL、TCL
+2. 再掌握约束与数据类型，理解设计表结构的原则
 3. 最后重点练习函数：单行函数 + 聚合函数
 
 ## 目录说明
 
-- [基础语法总览](./basic-grammar)
-- [函数笔记](./basic-grammar/function)
+- [基础语法总览](./basic-grammar/)
+- [函数笔记](./function/)
 
 ## 使用建议
 
 - 每学完一节，手写 3 条 SQL 并执行验证。
 - 查询语句优先加 `WHERE` 条件，避免无条件全表操作。
 - 事务相关练习建议固定使用 `START TRANSACTION` + `ROLLBACK` 先做安全演练。
-

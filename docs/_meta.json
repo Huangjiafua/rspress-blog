@@ -6,7 +6,7 @@
   },
   {
     "text": "Database",
-    "link": "/database/mysql/",
+    "link": "/database/",
     "activeMatch": "^/database/"
   },
    {

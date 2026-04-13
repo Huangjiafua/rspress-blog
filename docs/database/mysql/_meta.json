@@ -3,6 +3,11 @@
   {
     "type": "dir",
     "name": "basic-grammar",
-    "label": "Basic Grammar"
+    "label": "MySQL 基础语法"
+  },
+  {
+    "type": "dir",
+    "name": "function",
+    "label": "MySQL 函数"
   }
 ]
