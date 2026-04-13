@@ -13,5 +13,10 @@
     "text": "Git",
     "link": "/git/",
     "activeMatch": "^/git/"
+  },
+  {
+    "text": "Shopify",
+    "link": "/shopify/",
+    "activeMatch": "^/shopify/"
   }
 ]
