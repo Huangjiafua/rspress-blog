@@ -11,10 +11,11 @@
 ## 目录说明
 
 - [基础语法总览](./basic-grammar)
-- [函数笔记](./functions)
+- [函数笔记](./basic-grammar/function)
 
 ## 使用建议
 
 - 每学完一节，手写 3 条 SQL 并执行验证。
 - 查询语句优先加 `WHERE` 条件，避免无条件全表操作。
 - 事务相关练习建议固定使用 `START TRANSACTION` + `ROLLBACK` 先做安全演练。
+

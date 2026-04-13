@@ -1,4 +1,4 @@
-# MySQL 基础语法总览
+# MySQL 基础语法（DDL/DML/DQL/DCL/TCL）
 
 ## SQL 语言分类
 
