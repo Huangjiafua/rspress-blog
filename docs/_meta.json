@@ -8,5 +8,10 @@
     "text": "Database",
     "link": "/database/mysql/",
     "activeMatch": "^/database/"
+  },
+   {
+    "text": "Git",
+    "link": "/git/",
+    "activeMatch": "^/git/"
   }
 ]

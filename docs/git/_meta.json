@@ -1,0 +1,13 @@
+[
+  "index",
+  {
+    "type": "file",
+    "name": "gitlab-github-migration",
+    "label": "GitLab/GitHub 迁移"
+  },
+  {
+    "type": "file",
+    "name": "gitleak",
+    "label": "Gitleak 指南"
+  }
+]
