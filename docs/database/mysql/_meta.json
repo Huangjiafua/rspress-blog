@@ -1,13 +1,4 @@
 [
-  "index",
-  {
-    "type": "dir",
-    "name": "basic-grammar",
-    "label": "MySQL 基础语法"
-  },
-  {
-    "type": "dir",
-    "name": "function",
-    "label": "MySQL 函数"
-  }
+  "basic-grammar",
+  "function"
 ]

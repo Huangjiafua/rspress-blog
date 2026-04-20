@@ -1,0 +1,13 @@
+[
+  "index",
+  {
+    "type": "dir",
+    "name": "golang",
+    "label": "Golang"
+  },
+  {
+    "type": "dir",
+    "name": "gin",
+    "label": "Gin"
+  }
+]

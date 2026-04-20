@@ -9,14 +9,14 @@
     "link": "/database/",
     "activeMatch": "^/database/"
   },
-   {
+  {
     "text": "Git",
     "link": "/git/",
     "activeMatch": "^/git/"
   },
   {
-    "text": "Shopify",
-    "link": "/shopify/",
-    "activeMatch": "^/shopify/"
+    "text": "Go",
+    "link": "/go/",
+    "activeMatch": "^/go/"
   }
 ]
