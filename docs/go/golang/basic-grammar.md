@@ -302,3 +302,72 @@ func main() {
 2. 使用 `WaitGroup` 统计生产者完成时机，再统一 `close(results)`。
 3. 消费端使用 `for range` 持续读取，通道关闭后自然退出循环。
 4. “发送方关闭通道”在该模式下最安全，避免重复关闭导致 panic。
+
+### 5. URL 解析
+Go by Example 这节展示了如何把一个完整 URL 逐段拆开解析。
+
+#### 5.1 核心知识点（对应示例）
+1. `url.Parse(raw)`：把字符串解析成 `*url.URL`。
+2. 可直接读取：`Scheme`、`User`、`Host`、`Path`、`Fragment`、`RawQuery`。
+3. 用户信息在 `User` 中，可通过 `Username()` 和 `Password()` 取值。
+4. 主机和端口可用 `net.SplitHostPort(u.Host)` 拆分。
+5. 查询参数可用 `url.ParseQuery(u.RawQuery)` 解析成 map 结构。
+
+#### 5.2 对应示例（URL Parsing）
+```go
+package main
+
+import (
+	"fmt"
+	"net"
+	"net/url"
+)
+
+func main() {
+	s := "postgres://user:pass@host.com:5432/path?k=v#f"
+
+	u, err := url.Parse(s)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(u.Scheme) // postgres
+	fmt.Println(u.User)   // user:pass
+	fmt.Println(u.User.Username())
+
+	p, _ := u.User.Password()
+	fmt.Println(p) // pass
+
+	fmt.Println(u.Host) // host.com:5432
+	host, port, _ := net.SplitHostPort(u.Host)
+	fmt.Println(host) // host.com
+	fmt.Println(port) // 5432
+
+	fmt.Println(u.Path)     // /path
+	fmt.Println(u.Fragment) // f
+	fmt.Println(u.RawQuery) // k=v
+
+	m, _ := url.ParseQuery(u.RawQuery)
+	fmt.Println(m)       // map[k:[v]]
+	fmt.Println(m["k"][0]) // v
+}
+```
+
+#### 5.3 知识总结
+1. URL 解析建议统一走 `net/url`，避免手写 split 出错。
+2. `User`、`Host`、`RawQuery` 都是结构化入口，后续处理更安全。
+3. `url.ParseQuery` 返回 `map[string][]string`，天生支持重复参数。
+4. 端口拆分推荐 `net.SplitHostPort`，比手动切字符串可靠。
+
+#### 5.4 疑惑解答
+1. 为什么 `Password()` 是两个返回值？  
+第二个布尔值表示密码是否存在，避免把“空密码”和“没写密码”混淆。
+
+2. 为什么查询参数是 `[]string`？  
+因为同一个 key 可以出现多次（如 `k=1&k=2`）。
+
+3. `u.Host` 和 `host` 有什么区别？  
+`u.Host` 可能包含端口（如 `host.com:5432`）；`host` 是拆分后的纯主机名。
+
+4. `url.ParseQuery` 和 `u.Query()` 有何区别？  
+两者都能解析查询参数；Go by Example 这里演示的是对 `RawQuery` 显式解析。
