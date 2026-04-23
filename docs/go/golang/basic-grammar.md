@@ -140,3 +140,165 @@ func main() {
 
 4. 数字精度会丢吗？  
 当 JSON 进 `interface{}` 时数字默认按 `float64` 解析；需要精确控制时用具体类型或 `Decoder.UseNumber()`。
+
+### 3. 协程（Goroutine）
+Goroutine 是 Go 的轻量级并发执行单元，通过 `go` 关键字启动。
+
+#### 3.1 核心知识点
+1. `go f()` 会并发执行函数 `f`，不会阻塞当前流程。
+2. 主协程（`main`）结束时，其他协程也会一起结束。
+3. 并发不等于并行：并发是“交替推进”，并行是“同时执行”。
+4. 多个协程共享内存时要注意竞态问题（可用通道或锁协调）。
+
+#### 3.2 常用示例
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func worker(name string) {
+	for i := 1; i <= 3; i++ {
+		fmt.Println(name, i)
+		time.Sleep(100 * time.Millisecond)
+	}
+}
+
+func main() {
+	go worker("goroutine")
+	worker("main")
+	time.Sleep(500 * time.Millisecond) // 等待 goroutine 执行完成
+}
+```
+
+#### 3.3 知识总结
+1. 启动协程成本低，适合大量并发任务。
+2. 主函数退出会导致所有协程退出，要有“等待机制”（如 `WaitGroup` / 通道）。
+3. 协程之间通信优先使用通道，少用共享变量硬同步。
+
+#### 3.4 疑惑解答
+1. 为什么有时看不到 goroutine 输出？  
+因为 `main` 太快结束了，goroutine 还没来得及运行。
+
+2. `go` 后面的函数参数何时求值？  
+在启动 goroutine 的那一刻就会求值并复制参数。
+
+3. 协程越多越好吗？  
+不是。过多协程会带来调度和内存开销，应按任务规模控制。
+
+4. 如何等待一批 goroutine 完成？  
+实践中常用 `sync.WaitGroup`。
+
+### 4. 通道（Channel）
+Channel 是 goroutine 之间传递数据和同步时序的核心机制。
+
+#### 4.1 核心知识点
+1. `ch := make(chan int)`：创建无缓冲通道。
+2. 发送：`ch <- v`；接收：`v := <-ch`。
+3. 无缓冲通道：发送和接收必须同时就绪，天然同步。
+4. 有缓冲通道：`make(chan int, n)`，容量未满可先发，空时不可收。
+5. 关闭通道：`close(ch)`，通常由发送方关闭。
+
+#### 4.2 常用示例
+```go
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan string)
+
+	go func() {
+		ch <- "hello"
+	}()
+
+	msg := <-ch
+	fmt.Println(msg) // hello
+}
+```
+
+#### 4.3 遍历与关闭示例
+```go
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan int, 3)
+	ch <- 1
+	ch <- 2
+	ch <- 3
+	close(ch)
+
+	for v := range ch {
+		fmt.Println(v)
+	}
+}
+```
+
+#### 4.4 知识总结
+1. 通道不仅传数据，也传“时序信号”。
+2. “不要通过共享内存来通信；要通过通信来共享内存”是 Go 并发设计的核心思想。
+3. 关闭通道是为了告诉接收方“不会再有新数据”。
+4. 向已关闭通道发送会 panic；从已关闭通道接收会继续取剩余值，取空后得到零值。
+
+#### 4.5 疑惑解答
+1. 什么情况下会死锁（deadlock）？  
+常见是所有 goroutine 都在等待通道发送/接收，没人能继续推进。
+
+2. 谁来关闭通道？  
+一般是发送方关闭，不是接收方。
+
+3. 如何判断通道是否已关闭？  
+使用双返回接收：`v, ok := <-ch`，`ok == false` 表示通道已关闭且无剩余数据。
+
+4. `nil` 通道有什么特点？  
+对 `nil` 通道发送和接收都会永久阻塞，常用于 `select` 中动态屏蔽分支。
+
+#### 4.6 通道与协程结合案例（生产者-消费者）
+下面案例里，2 个生产者 goroutine 把任务结果写入同一个通道，主协程统一消费：
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func producer(id int, jobs []int, out chan<- string, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for _, job := range jobs {
+		out <- fmt.Sprintf("producer-%d finished job-%d", id, job)
+	}
+}
+
+func main() {
+	results := make(chan string, 8)
+
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	go producer(1, []int{1, 2, 3}, results, &wg)
+	go producer(2, []int{4, 5, 6}, results, &wg)
+
+	// 单独起一个协程等待所有生产者结束后关闭通道
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	// 主协程作为消费者，直到通道关闭
+	for msg := range results {
+		fmt.Println(msg)
+	}
+}
+```
+
+案例要点：
+1. `chan<- string` 表示只写通道，限制 producer 只能发送，接口更清晰。
+2. 使用 `WaitGroup` 统计生产者完成时机，再统一 `close(results)`。
+3. 消费端使用 `for range` 持续读取，通道关闭后自然退出循环。
+4. “发送方关闭通道”在该模式下最安全，避免重复关闭导致 panic。
