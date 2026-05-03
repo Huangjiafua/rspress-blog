@@ -4,12 +4,12 @@ import { defineConfig } from 'rspress/config';
 export default defineConfig({
   root: path.join(__dirname, 'docs'),
   globalStyles: path.join(__dirname, './src/styles/index.css'),
-  title: 'My Site',
-  icon: '/rspress-icon.png',
+  title: 'Richmond Study',
+  icon: '/study-icon.svg',
   base: '/rspress-blog/',
   logo: {
-    light: '/rspress-light-logo.png',
-    dark: '/rspress-dark-logo.png',
+    light: '/study-light-logo.svg',
+    dark: '/study-dark-logo.svg',
   },
   themeConfig: {
     socialLinks: [

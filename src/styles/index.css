@@ -1,3 +1,52 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+:root {
+  --study-bg-1: #f0f9ff;
+  --study-bg-2: #ecfdf5;
+  --study-accent: #0284c7;
+}
+
+.rspress-home-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: linear-gradient(120deg, var(--study-bg-1), var(--study-bg-2));
+}
+
+.rspress-home-hero::before,
+.rspress-home-hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.rspress-home-hero::before {
+  width: 360px;
+  height: 360px;
+  right: -120px;
+  top: -140px;
+  background: radial-gradient(circle, rgb(2 132 199 / 20%) 0%, rgb(2 132 199 / 0%) 70%);
+}
+
+.rspress-home-hero::after {
+  width: 320px;
+  height: 320px;
+  left: -120px;
+  bottom: -140px;
+  background: radial-gradient(circle, rgb(22 163 74 / 18%) 0%, rgb(22 163 74 / 0%) 72%);
+}
+
+.rspress-home-hero .hero-tagline {
+  color: #0f172a;
+}
+
+/* Scale up navbar logo while preserving aspect ratio */
+.rspress-nav .rspress-logo img,
+#logo.rspress-logo {
+  height: 44px;
+  width: auto;
+  max-height: none;
+}

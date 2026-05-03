@@ -2,36 +2,30 @@
 pageType: home
 
 hero:
-  name: My Site
-  text: A cool website!
-  tagline: This is the tagline
+  name: Richmond Study
+  text: 高效学习知识库
+  tagline: 聚焦编程、数据库与工程实践的学习笔记
   actions:
     - theme: brand
-      text: Quick Start
+      text: 开始学习
       link: /guide/
     - theme: alt
-      text: GitHub
-      link: https://github.com/web-infra-dev/rspress
+      text: 查看目录
+      link: /go/
   image:
-    src: /rspress-icon.png
-    alt: Logo
+    src: /study-icon.svg
+    alt: Study Logo
 features:
-  - title: Blazing fast build speed
-    details: The core compilation module is based on the Rust front-end toolchain, providing a more ultimate development experience.
-    icon: 🏃🏻‍♀️
-  - title: Support for MDX content writing
-    details: MDX is a powerful way to write content, allowing you to use React components in Markdown.
-    icon: 📦
-  - title: Built-in full-text search
-    details: Automatically generates a full-text search index for you during construction, providing out-of-the-box full-text search capabilities.
-    icon: 🎨
-  - title: Simpler I18n solution
-    details: With the built-in I18n solution, you can easily provide multi-language support for documents or components.
-    icon: 🌍
-  - title: Static site generation
-    details: In production, it automatically builds into static HTML files, which can be easily deployed anywhere.
-    icon: 🌈
-  - title: Providing multiple custom capabilities
-    details: Through its extension mechanism, you can easily extend theme UI and build process.
-    icon: 🔥
+  - title: 系统化知识整理
+    details: 按主题拆分学习内容，帮助你建立稳定、可复用的知识体系。
+    icon: 📚
+  - title: 实战导向笔记
+    details: 结合真实开发场景记录关键经验，减少“看懂了但不会用”。
+    icon: 🛠️
+  - title: 快速检索回顾
+    details: 支持全文搜索与结构化目录，随时回看重点知识。
+    icon: 🔎
+  - title: 持续迭代更新
+    details: 将学习过程沉淀为长期资产，持续补全与修订。
+    icon: 🚀
 ---

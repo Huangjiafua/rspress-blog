@@ -1,0 +1,19 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="64" y1="64" x2="448" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+    <linearGradient id="book" x1="128" y1="132" x2="384" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#E2E8F0"/>
+    </linearGradient>
+  </defs>
+  <rect x="32" y="32" width="448" height="448" rx="96" fill="url(#bg)"/>
+  <path d="M120 156C120 140.536 132.536 128 148 128H246C283.555 128 314 158.445 314 196V356H174C144.177 356 120 331.823 120 302V156Z" fill="url(#book)"/>
+  <path d="M392 156C392 140.536 379.464 128 364 128H266C228.445 128 198 158.445 198 196V356H338C367.823 356 392 331.823 392 302V156Z" fill="url(#book)"/>
+  <path d="M256 176V352" stroke="#0F172A" stroke-width="14" stroke-linecap="round"/>
+  <path d="M162 208H226" stroke="#38BDF8" stroke-width="10" stroke-linecap="round"/>
+  <path d="M286 208H350" stroke="#4ADE80" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="256" cy="96" r="20" fill="#FACC15"/>
+</svg>
