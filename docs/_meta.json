@@ -5,6 +5,11 @@
     "activeMatch": "^/guide/"
   },
   {
+    "text": "Computer Basics",
+    "link": "/computer-basics/",
+    "activeMatch": "^/computer-basics/"
+  },
+  {
     "text": "Database",
     "link": "/database/",
     "activeMatch": "^/database/"
