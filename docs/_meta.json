@@ -5,9 +5,9 @@
     "activeMatch": "^/guide/"
   },
   {
-    "text": "Computer Basics",
-    "link": "/computer-basics/",
-    "activeMatch": "^/computer-basics/"
+    "text": "Systems Thinking",
+    "link": "/systems-thinking/",
+    "activeMatch": "^/systems-thinking/"
   },
   {
     "text": "Database",
