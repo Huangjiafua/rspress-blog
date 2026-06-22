@@ -1,10 +1,12 @@
-# MySQL 忘记密码后重置密码（PowerShell）
+# MySQL 忘记密码后重置密码
 
 当忘记 MySQL 的 `root` 密码时，可以临时让 MySQL 跳过权限表启动，登录后重置密码，再恢复正常启动方式。
 
-本文以 Windows + PowerShell 为例，适合本机开发环境或有服务器管理员权限的场景。
+本文整理 Windows + PowerShell 和 WSL2 Ubuntu 两种常见开发环境的处理方式。
 
-## 操作前确认
+## Windows PowerShell 环境
+
+### 操作前确认
 
 重置密码前先确认 3 件事：
 
@@ -22,7 +24,7 @@ Get-Service | Where-Object { $_.Name -like "*mysql*" }
 
 如果输出中看到 `MySQL80`，后续命令中的服务名就使用 `MySQL80`。
 
-## 1. 停止 MySQL 服务
+### 1. 停止 MySQL 服务
 
 ```powershell
 Stop-Service -Name MySQL80
@@ -38,7 +40,7 @@ Get-Service -Name MySQL80
 
 状态显示为 `Stopped` 即可继续。
 
-## 2. 跳过权限表启动 MySQL
+### 2. 跳过权限表启动 MySQL
 
 进入 MySQL 安装目录的 `bin` 目录。路径按实际安装位置调整：
 
@@ -64,7 +66,7 @@ Set-Location "C:\Program Files\MySQL\MySQL Server 8.0\bin"
 
 不要在这里使用 `--skip-networking`。在 Windows 上它会禁用 TCP/IP，如果同时没有启用 named pipe 或 shared memory，MySQL 可能因为没有可用连接方式而直接退出。
 
-## 3. 新开一个 PowerShell 登录 MySQL
+### 3. 新开一个 PowerShell 登录 MySQL
 
 重新打开一个管理员 PowerShell 窗口，进入 MySQL 的 `bin` 目录：
 
@@ -84,7 +86,7 @@ Set-Location "C:\Program Files\MySQL\MySQL Server 8.0\bin"
 FLUSH PRIVILEGES;
 ```
 
-## 4. 修改 root 密码
+### 4. 修改 root 密码
 
 MySQL 8.0 推荐使用 `ALTER USER`：
 
@@ -116,7 +118,7 @@ FLUSH PRIVILEGES;
 EXIT;
 ```
 
-## 5. 关闭临时 MySQL 进程
+### 5. 关闭临时 MySQL 进程
 
 回到第 2 步那个被 `mysqld.exe` 占用的 PowerShell 窗口，按 `Ctrl + C` 停止临时进程。
 
@@ -127,7 +129,7 @@ Get-Process mysqld
 Stop-Process -Name mysqld -Force
 ```
 
-## 6. 正常启动 MySQL 服务
+### 6. 正常启动 MySQL 服务
 
 ```powershell
 Start-Service -Name MySQL80
@@ -147,7 +149,181 @@ Get-Service -Name MySQL80
 
 输入新密码后能进入 MySQL，就说明重置成功。
 
+## WSL2 Ubuntu 环境
+
+WSL2 Ubuntu 中 MySQL 通常通过 `service mysql` 管理；如果你的 WSL2 已启用 systemd，也可以使用 `systemctl`。
+
+### 1. 停止 MySQL
+
+优先使用兼容性更好的 `service`：
+
+```bash
+sudo service mysql stop
+```
+
+如果你的 WSL2 已启用 systemd，也可以使用：
+
+```bash
+sudo systemctl stop mysql
+```
+
+确认进程已经停止：
+
+```bash
+ps aux | grep mysqld
+```
+
+如果还能看到 `mysqld` 主进程，先确认没有业务连接，再停止残留进程。
+
+### 2. 准备 socket 目录
+
+Ubuntu 上 MySQL 需要使用 `/var/run/mysqld` 保存 socket 文件。目录不存在或权限不对时，临时启动可能失败。
+
+```bash
+sudo mkdir -p /var/run/mysqld
+sudo chown mysql:mysql /var/run/mysqld
+```
+
+### 3. 跳过权限表启动 MySQL
+
+使用 `mysqld_safe` 临时启动：
+
+```bash
+sudo mysqld_safe --skip-grant-tables --skip-networking &
+```
+
+参数说明：
+
+| 参数 | 作用 |
+| --- | --- |
+| `--skip-grant-tables` | 启动时不加载权限表，允许无密码登录 |
+| `--skip-networking` | 禁用 TCP/IP，只保留本机 socket 连接，降低风险 |
+| `&` | 放到后台运行，当前终端可以继续输入命令 |
+
+等待几秒后确认 MySQL 已启动：
+
+```bash
+mysqladmin ping
+```
+
+看到 `mysqld is alive` 后继续。
+
+### 4. 无密码登录 MySQL
+
+```bash
+mysql -u root
+```
+
+如果提示权限问题，可以加 `sudo`：
+
+```bash
+sudo mysql -u root
+```
+
+进入 MySQL 后，先刷新权限表：
+
+```sql
+FLUSH PRIVILEGES;
+```
+
+### 5. 修改 root 密码
+
+先查看 `root` 账号的 `host` 和认证插件：
+
+```sql
+SELECT user, host, plugin FROM mysql.user WHERE user = 'root';
+```
+
+MySQL 8.0 可以直接修改密码：
+
+```sql
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'NewStrongPassword_123!';
+```
+
+如果你的 `root` 使用的是 `auth_socket`，并且希望以后通过密码登录，可以显式改为密码认证插件：
+
+```sql
+ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'NewStrongPassword_123!';
+```
+
+修改完成后刷新权限并退出：
+
+```sql
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+### 6. 关闭临时进程并恢复服务
+
+结束临时启动的 MySQL：
+
+```bash
+sudo mysqladmin shutdown
+```
+
+如果无法关闭，可以查找进程后再处理：
+
+```bash
+ps aux | grep mysqld
+```
+
+重新启动 MySQL 服务：
+
+```bash
+sudo service mysql start
+```
+
+如果使用 systemd：
+
+```bash
+sudo systemctl start mysql
+```
+
+测试新密码：
+
+```bash
+mysql -u root -p
+```
+
+能输入新密码进入 MySQL，就说明重置成功。
+
 ## 常见问题
+
+### WSL2 中 systemctl 不可用
+
+部分 WSL2 Ubuntu 默认没有启用 systemd，会出现 `System has not been booted with systemd` 之类的提示。
+
+这种情况下使用 `service` 命令即可：
+
+```bash
+sudo service mysql stop
+sudo service mysql start
+```
+
+### mysqld_safe 启动失败
+
+先检查 socket 目录和权限：
+
+```bash
+ls -ld /var/run/mysqld
+```
+
+如果目录不存在或属主不是 `mysql`，重新执行：
+
+```bash
+sudo mkdir -p /var/run/mysqld
+sudo chown mysql:mysql /var/run/mysqld
+```
+
+### mysqladmin ping 连接不上
+
+先等待几秒再试。如果仍然失败，查看 MySQL 错误日志：
+
+```bash
+sudo tail -n 100 /var/log/mysql/error.log
+```
+
+常见原因是已有 MySQL 进程未停止、socket 目录权限不对、数据目录损坏或配置文件路径错误。
 
 ### 找不到 mysqld.exe 或 mysql.exe
 
