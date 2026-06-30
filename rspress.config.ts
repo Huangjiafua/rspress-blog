@@ -11,15 +11,6 @@ export default defineConfig({
     light: '/study-light-logo.svg',
     dark: '/study-dark-logo.svg',
   },
-  themeConfig: {
-    socialLinks: [
-      {
-        icon: 'github',
-        mode: 'link',
-        content: 'https://github.com/web-infra-dev/rspress',
-      },
-    ],
-  },
   // builderConfig: {
   //   output: {
   //     assetPrefix: 'https://cdn.com/',
