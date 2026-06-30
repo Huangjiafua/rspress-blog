@@ -2,6 +2,11 @@
   "index",
   {
     "type": "dir",
+    "name": "branch-management",
+    "label": "Git 分支管理"
+  },
+  {
+    "type": "dir",
     "name": "gitlab-github-migration",
     "label": "GitLab/GitHub 迁移"
   },
